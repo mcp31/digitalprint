@@ -1,4 +1,5 @@
 import 'package:digital_print/BitTickleCard.dart';
+import 'package:digital_print/CalibrateEncoder.dart';
 import 'package:digital_print/ReadPrintCard.dart';
 import 'package:digital_print/SetupCard.dart';
 import 'package:flutter/material.dart';
@@ -57,27 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 "Calibrate Encoder",
                 style: kCardHeaderTextStyle,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  vertical: 10.0,
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 30.0,
-                  vertical: 20.0,
-                ),
-                decoration: BoxDecoration(
-                  color: kOffWhite,
-                  borderRadius: BorderRadius.circular(5.0),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 2,
-                      offset: Offset(1, 1),
-                      color: Colors.grey,
-                    ),
-                  ],
-                ),
-                child: Text(""),
-              ),
+              CalibrateEncoder(),
               SizedBox(
                 height: 30.0,
               ),
