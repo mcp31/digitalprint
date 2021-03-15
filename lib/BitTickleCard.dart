@@ -73,7 +73,7 @@ class _BitTickleCardState extends State<BitTickleCard> {
                         hintStyle:
                             TextStyle(fontSize: 16.0, color: Colors.grey),
                         border: InputBorder.none,
-                        hintText: "Enter number of blanks",
+                        hintText: "Enter pixel element size",
                       ),
                       controller: _tickleSizeController,
                       onSubmitted: (String value) async {

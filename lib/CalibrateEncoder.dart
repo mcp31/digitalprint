@@ -131,7 +131,7 @@ class _CalibrateEncoderState extends State<CalibrateEncoder> {
                           border: InputBorder.none,
                           hintText: "Enter encoder divider",
                         ),
-                        controller: _multiplierController,
+                        controller: _dividerController,
                         onSubmitted: (String value) async {
                           await showDialog<void>(
                             context: context,
@@ -235,7 +235,7 @@ class _CalibrateEncoderState extends State<CalibrateEncoder> {
                           border: InputBorder.none,
                           hintText: "Enter length of image",
                         ),
-                        controller: _multiplierController,
+                        controller: _measuredLengthController,
                         onSubmitted: (String value) async {
                           await showDialog<void>(
                             context: context,
