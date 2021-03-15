@@ -46,6 +46,7 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.all(0),
                       title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             "Read Print",
@@ -74,6 +75,7 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.all(0),
                       title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             "Read Lookup Prt.",
