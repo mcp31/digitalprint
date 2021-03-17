@@ -10,7 +10,21 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
   bool _readPrintChecked = false;
   bool _readLookUp = false;
   String dropdownValue = 'Option 1';
-  bool _showDropDown = false;
+  bool _showExtraOptions = false;
+
+  TextEditingController _readPrintIndexController;
+  TextEditingController _readPrintIndexLenController;
+
+  void initState() {
+    super.initState();
+    _readPrintIndexController = TextEditingController();
+    _readPrintIndexLenController = TextEditingController();
+  }
+
+  void dispose() {
+    _readPrintIndexLenController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +74,6 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                         //TODO: If checked, have a drop down box
                         setState(() {
                           _readPrintChecked = value;
-                          _showDropDown = value;
                         });
                       },
                     ),
@@ -88,22 +101,27 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                       onChanged: (bool value) {
                         setState(() {
                           _readLookUp = value;
+                          _showExtraOptions = value;
                         });
                       },
                     ),
                   ),
                 ],
               ),
+              SizedBox(
+                height: 10.0,
+              ),
+              _showExtraOptions ? _extraOption() : Text(""),
             ],
           ),
-          Container(
-            padding: EdgeInsets.only(bottom: 60.0, left: 20.0),
-            child: _showDropDown ? _dropDown() : Text(""),
-          ),
+          // Container(
+          //   padding: EdgeInsets.only(bottom: 60.0, left: 20.0),
+          //   child: _showDropDown ? _extraOption() : Text(""),
+          // ),
           // _showDropDown ? _dropDown() : Text(""),
           Expanded(
             child: Container(
-              height: 140,
+              height: _showExtraOptions ? 215 : 140,
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: IconButton(
@@ -124,35 +142,110 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
     );
   }
 
-  Widget _dropDown() {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_drop_down),
-      iconSize: 30,
-      elevation: 16,
-      //style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.blue[700],
-      ),
-      onChanged: (String newValue) {
-        setState(() {
-          dropdownValue = newValue;
-        });
-      },
-      items: <String>['Option 1', 'Option 2', 'Option 3', 'and more']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 10.0,
+  Widget _extraOption() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Read Print Index:",
+              style: kCardBodyTextStyle,
             ),
-            child: Text(value),
-          ),
-        );
-      }).toList(),
+            Container(
+              color: Colors.grey[300],
+              margin: EdgeInsets.only(
+                left: 30.0,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 10.0,
+              ),
+              width: 250,
+              //TODO: Have validator to only accept integers
+              child: TextField(
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                  border: InputBorder.none,
+                  hintText: "Enter pages in each cycle",
+                ),
+                controller: _readPrintIndexController,
+                onSubmitted: (String value) async {
+                  await showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      //For debugging purposes
+                      return AlertDialog(
+                        title: const Text('Read Print Index'),
+                        content: Text('You entered $value'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10.0,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Read Print Index Len:",
+              style: kCardBodyTextStyle,
+            ),
+            Container(
+              color: Colors.grey[300],
+              margin: EdgeInsets.only(
+                left: 30.0,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 10.0,
+              ),
+              width: 250,
+              //TODO: Have validator to only accept integers
+              child: TextField(
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
+                  border: InputBorder.none,
+                  hintText: "Enter cycle to split",
+                ),
+                controller: _readPrintIndexLenController,
+                onSubmitted: (String value) async {
+                  await showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      //For debugging purposes
+                      return AlertDialog(
+                        title: const Text('Read Print Index'),
+                        content: Text('You entered $value'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
