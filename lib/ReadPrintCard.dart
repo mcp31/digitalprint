@@ -28,109 +28,118 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: 10.0,
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 30.0,
-        vertical: 20.0,
-      ),
-      decoration: BoxDecoration(
-        color: kOffWhite,
-        borderRadius: BorderRadius.circular(5.0),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 2,
-            offset: Offset(1, 1),
-            color: Colors.grey,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          "Read and Print Options",
+          style: kCardHeaderTextStyle,
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(
+            vertical: 10.0,
           ),
-        ],
-      ),
-      child: Row(
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: 300,
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  contentPadding: EdgeInsets.all(0),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Read Print",
-                        style: kCardBodyTextStyle,
-                      ),
-                      Text("Enables read and print mode"),
-                    ],
-                  ),
-                  value: _readPrintChecked,
-                  onChanged: (bool value) {
-                    //TODO: If checked, have a drop down box
-                    setState(() {
-                      _readPrintChecked = value;
-                    });
-                  },
-                ),
+          padding: EdgeInsets.symmetric(
+            horizontal: 30.0,
+            vertical: 20.0,
+          ),
+          decoration: BoxDecoration(
+            color: kOffWhite,
+            borderRadius: BorderRadius.circular(5.0),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 2,
+                offset: Offset(1, 1),
+                color: Colors.grey,
               ),
-              Container(
-                width: 300,
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  contentPadding: EdgeInsets.all(0),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Read Lookup Prt.",
-                        style: kCardBodyTextStyle,
-                      ),
-                      Text("Enables print look-up mode"),
-                    ],
-                  ),
-                  value: _readLookUp,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _readLookUp = value;
-                      _showExtraOptions = value;
-                    });
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              _showExtraOptions ? _extraOption() : Text(""),
             ],
           ),
-          // Container(
-          //   padding: EdgeInsets.only(bottom: 60.0, left: 20.0),
-          //   child: _showDropDown ? _extraOption() : Text(""),
-          // ),
-          // _showDropDown ? _dropDown() : Text(""),
-          Expanded(
-            child: Container(
-              height: _showExtraOptions ? 215 : 140,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: IconButton(
-                  color: Colors.grey[600],
-                  icon: Icon(
-                    Icons.info,
-                    size: 30.0,
+          child: Row(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: 300,
+                    child: CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.all(0),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Read Print",
+                            style: kCardBodyTextStyle,
+                          ),
+                          Text("Enables read and print mode"),
+                        ],
+                      ),
+                      value: _readPrintChecked,
+                      onChanged: (bool value) {
+                        //TODO: If checked, have a drop down box
+                        setState(() {
+                          _readPrintChecked = value;
+                        });
+                      },
+                    ),
                   ),
-                  onPressed: () {
-                    //TODO: Add information
-                  },
+                  Container(
+                    width: 300,
+                    child: CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.all(0),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Read Lookup Prt.",
+                            style: kCardBodyTextStyle,
+                          ),
+                          Text("Enables print look-up mode"),
+                        ],
+                      ),
+                      value: _readLookUp,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _readLookUp = value;
+                          _showExtraOptions = value;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  _showExtraOptions ? _extraOption() : Text(""),
+                ],
+              ),
+              // Container(
+              //   padding: EdgeInsets.only(bottom: 60.0, left: 20.0),
+              //   child: _showDropDown ? _extraOption() : Text(""),
+              // ),
+              // _showDropDown ? _dropDown() : Text(""),
+              Expanded(
+                child: Container(
+                  height: _showExtraOptions ? 215 : 140,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: IconButton(
+                      color: Colors.grey[600],
+                      icon: Icon(
+                        Icons.info,
+                        size: 30.0,
+                      ),
+                      onPressed: () {
+                        //TODO: Add information
+                      },
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

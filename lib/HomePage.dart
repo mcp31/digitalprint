@@ -5,10 +5,11 @@ import 'package:digital_print/IOControl.dart';
 import 'package:digital_print/MeteorConfigCard.dart';
 import 'package:digital_print/ReadPrintCard.dart';
 import 'package:digital_print/SetupCard.dart';
-import 'package:flutter/material.dart';
 import 'SortDelayCard.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'constants.dart';
+import 'SearchBar.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -23,6 +24,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Trial Project - Operator Configuration"),
+        leading: IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            showSearch(context: context, delegate: CardSearch());
+          },
+        ),
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.search),
+        //     onPressed: () {
+        //       showSearch(context: context, delegate: CardSearch());
+        //     },
+        //   ),
+        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -33,66 +48,33 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              //TODO: Separate each card set to its own file
-              Text(
-                "Setup Page",
-                style: kCardHeaderTextStyle,
-              ),
               SetupCard(),
               SizedBox(
                 height: 30.0,
-              ),
-              Text(
-                "Bit Tickle Settings",
-                style: kCardHeaderTextStyle,
               ),
               BitTickleCard(),
               SizedBox(
                 height: 30.0,
               ),
-              Text(
-                "Read and Print Options",
-                style: kCardHeaderTextStyle,
-              ),
               ReadPrintCard(),
               SizedBox(
                 height: 30.0,
-              ),
-              Text(
-                "Calibrate Encoder",
-                style: kCardHeaderTextStyle,
               ),
               CalibrateEncoder(),
               SizedBox(
                 height: 30.0,
               ),
-              Text(
-                "Meteor Config Directory",
-                style: kCardHeaderTextStyle,
-              ),
               MeteorConfigCard(),
               SizedBox(
                 height: 30.0,
-              ),
-              Text(
-                "I/O Control",
-                style: kCardHeaderTextStyle,
               ),
               IOControl(),
               SizedBox(
                 height: 30.0,
               ),
-              Text(
-                "Sort Delay",
-                style: kCardHeaderTextStyle,
-              ),
               SortDelayCard(),
               SizedBox(
                 height: 30.0,
-              ),
-              Text(
-                "Bundle Options",
-                style: kCardHeaderTextStyle,
               ),
               BundleOptionsCard(),
             ],

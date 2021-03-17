@@ -12,74 +12,83 @@ class _MeteorConfigCardState extends State<MeteorConfigCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: 10.0,
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 30.0,
-        vertical: 20.0,
-      ),
-      decoration: BoxDecoration(
-        color: kOffWhite,
-        borderRadius: BorderRadius.circular(5.0),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 2,
-            offset: Offset(1, 1),
-            color: Colors.grey,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          "Meteor Config Directory",
+          style: kCardHeaderTextStyle,
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(
+            vertical: 10.0,
           ),
-        ],
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                //Dropdown menu
-                _FilePathDropDown(),
-                //checkbox
-                Container(
-                  //width: 200,
-                  child: CheckboxListTile(
-                    controlAffinity: ListTileControlAffinity.leading,
-                    contentPadding: EdgeInsets.all(0),
-                    title: Text(
-                      "Reverse Directory",
-                      style: kCardBodyTextStyle,
+          padding: EdgeInsets.symmetric(
+            horizontal: 30.0,
+            vertical: 20.0,
+          ),
+          decoration: BoxDecoration(
+            color: kOffWhite,
+            borderRadius: BorderRadius.circular(5.0),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 2,
+                offset: Offset(1, 1),
+                color: Colors.grey,
+              ),
+            ],
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    //Dropdown menu
+                    _FilePathDropDown(),
+                    //checkbox
+                    Container(
+                      //width: 200,
+                      child: CheckboxListTile(
+                        controlAffinity: ListTileControlAffinity.leading,
+                        contentPadding: EdgeInsets.all(0),
+                        title: Text(
+                          "Reverse Directory",
+                          style: kCardBodyTextStyle,
+                        ),
+                        value: _reverseDirectory,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _reverseDirectory = value;
+                          });
+                        },
+                      ),
                     ),
-                    value: _reverseDirectory,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _reverseDirectory = value;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              height: 100,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: IconButton(
-                  color: Colors.grey[600],
-                  icon: Icon(
-                    Icons.info,
-                    size: 30.0,
-                  ),
-                  onPressed: () {
-                    //TODO: Add information
-                  },
+                  ],
                 ),
               ),
-            ),
+              Expanded(
+                child: Container(
+                  height: 100,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: IconButton(
+                      color: Colors.grey[600],
+                      icon: Icon(
+                        Icons.info,
+                        size: 30.0,
+                      ),
+                      onPressed: () {
+                        //TODO: Add information
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
