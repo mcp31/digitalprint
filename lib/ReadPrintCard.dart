@@ -52,61 +52,53 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: 300,
-                    child: CheckboxListTile(
-                      controlAffinity: ListTileControlAffinity.leading,
-                      contentPadding: EdgeInsets.all(0),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Read Print",
-                            style: kCardBodyTextStyle,
-                          ),
-                          Text("Enables read and print mode"),
-                        ],
+              Container(
+                width: 300,
+                child: CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.all(0),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Read Print",
+                        style: kCardBodyTextStyle,
                       ),
-                      value: _readPrintChecked,
-                      onChanged: (bool value) {
-                        //TODO: If checked, have a drop down box
-                        setState(() {
-                          _readPrintChecked = value;
-                        });
-                      },
-                    ),
+                      Text("Enables read and print mode"),
+                    ],
                   ),
-                ],
+                  value: _readPrintChecked,
+                  onChanged: (bool value) {
+                    //TODO: If checked, have a drop down box
+                    setState(() {
+                      _readPrintChecked = value;
+                    });
+                  },
+                ),
               ),
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: 300,
-                    child: CheckboxListTile(
-                      controlAffinity: ListTileControlAffinity.leading,
-                      contentPadding: EdgeInsets.all(0),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Read Lookup Prt.",
-                            style: kCardBodyTextStyle,
-                          ),
-                          Text("Enables print look-up mode"),
-                        ],
+              Container(
+                width: 300,
+                child: CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.all(0),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Read Lookup Prt.",
+                        style: kCardBodyTextStyle,
                       ),
-                      value: _readLookUp,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _readLookUp = value;
-                          _showExtraOptions = value;
-                        });
-                      },
-                    ),
+                      Text("Enables print look-up mode"),
+                    ],
                   ),
-                ],
+                  value: _readLookUp,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _readLookUp = value;
+                      _showExtraOptions = value;
+                    });
+                  },
+                ),
               ),
               SizedBox(
                 height: 10.0,
