@@ -14,7 +14,7 @@ class CardSearch extends SearchDelegate<String> {
   ThemeData appBarTheme(BuildContext context) {
     return ThemeData(
       primaryColor: Colors.blue[700],
-      hintColor: Colors.blue[300],
+      hintColor: Colors.blue[200],
       textTheme: TextTheme(
         title: TextStyle(
           color: Colors.white,

@@ -67,44 +67,46 @@ class _SetupCardState extends State<SetupCard> {
                           "Blank Count:",
                           style: kCardBodyTextStyle,
                         ),
-                        Container(
-                          color: Colors.grey[300],
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 20.0,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.0,
-                          ),
-                          width: 250,
-                          //TODO: Have validator to only accept integers
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  TextStyle(fontSize: 16.0, color: Colors.grey),
-                              border: InputBorder.none,
-                              hintText: "Enter number of blanks",
+                        Expanded(
+                          child: Container(
+                            color: Colors.grey[300],
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 20.0,
                             ),
-                            controller: _blankCountController,
-                            onSubmitted: (String value) async {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  //For debugging purposes
-                                  return AlertDialog(
-                                    title: const Text('Blank Count'),
-                                    content: Text('You entered $value'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                            ),
+                            width: 250,
+                            //TODO: Have validator to only accept integers
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                    fontSize: 16.0, color: Colors.grey),
+                                border: InputBorder.none,
+                                hintText: "Enter number of blanks",
+                              ),
+                              controller: _blankCountController,
+                              onSubmitted: (String value) async {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    //For debugging purposes
+                                    return AlertDialog(
+                                      title: const Text('Blank Count'),
+                                      content: Text('You entered $value'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -119,44 +121,46 @@ class _SetupCardState extends State<SetupCard> {
                           "Setup Width:",
                           style: kCardBodyTextStyle,
                         ),
-                        Container(
-                          color: Colors.grey[300],
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 20.0,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.0,
-                          ),
-                          width: 250,
-                          //TODO: Have validator to only accept integers
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  TextStyle(fontSize: 16.0, color: Colors.grey),
-                              border: InputBorder.none,
-                              hintText: "Enter width of setup page",
+                        Expanded(
+                          child: Container(
+                            color: Colors.grey[300],
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 20.0,
                             ),
-                            controller: _setupWidthController,
-                            onSubmitted: (String value) async {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  //For debugging purposes
-                                  return AlertDialog(
-                                    title: const Text('Setup Width'),
-                                    content: Text('You entered $value'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                            ),
+                            width: 250,
+                            //TODO: Have validator to only accept integers
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                    fontSize: 16.0, color: Colors.grey),
+                                border: InputBorder.none,
+                                hintText: "Enter width of setup page",
+                              ),
+                              controller: _setupWidthController,
+                              onSubmitted: (String value) async {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    //For debugging purposes
+                                    return AlertDialog(
+                                      title: const Text('Setup Width'),
+                                      content: Text('You entered $value'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],

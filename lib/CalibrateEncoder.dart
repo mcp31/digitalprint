@@ -69,44 +69,46 @@ class _CalibrateEncoderState extends State<CalibrateEncoder> {
                           "Multiplier:",
                           style: kCardBodyTextStyle,
                         ),
-                        Container(
-                          color: Colors.grey[300],
-                          margin: EdgeInsets.only(
-                            left: 30.0,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.0,
-                          ),
-                          width: 250,
-                          //TODO: Have validator to only accept integers
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  TextStyle(fontSize: 16.0, color: Colors.grey),
-                              border: InputBorder.none,
-                              hintText: "Enter encoder multipler",
+                        Expanded(
+                          child: Container(
+                            color: Colors.grey[300],
+                            margin: EdgeInsets.only(
+                              left: 100.0,
                             ),
-                            controller: _multiplierController,
-                            onSubmitted: (String value) async {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  //For debugging purposes
-                                  return AlertDialog(
-                                    title: const Text('Tickle Size'),
-                                    content: Text('You entered $value'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                            ),
+                            width: 250,
+                            //TODO: Have validator to only accept integers
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                    fontSize: 16.0, color: Colors.grey),
+                                border: InputBorder.none,
+                                hintText: "Enter encoder multipler",
+                              ),
+                              controller: _multiplierController,
+                              onSubmitted: (String value) async {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    //For debugging purposes
+                                    return AlertDialog(
+                                      title: const Text('Tickle Size'),
+                                      content: Text('You entered $value'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -121,44 +123,46 @@ class _CalibrateEncoderState extends State<CalibrateEncoder> {
                           "Divider:",
                           style: kCardBodyTextStyle,
                         ),
-                        Container(
-                          color: Colors.grey[300],
-                          margin: EdgeInsets.only(
-                            left: 30.0,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.0,
-                          ),
-                          width: 250,
-                          //TODO: Have validator to only accept integers
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  TextStyle(fontSize: 16.0, color: Colors.grey),
-                              border: InputBorder.none,
-                              hintText: "Enter encoder divider",
+                        Expanded(
+                          child: Container(
+                            color: Colors.grey[300],
+                            margin: EdgeInsets.only(
+                              left: 120.0,
                             ),
-                            controller: _dividerController,
-                            onSubmitted: (String value) async {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  //For debugging purposes
-                                  return AlertDialog(
-                                    title: const Text('Tickle Size'),
-                                    content: Text('You entered $value'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                            ),
+                            width: 250,
+                            //TODO: Have validator to only accept integers
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                    fontSize: 16.0, color: Colors.grey),
+                                border: InputBorder.none,
+                                hintText: "Enter encoder divider",
+                              ),
+                              controller: _dividerController,
+                              onSubmitted: (String value) async {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    //For debugging purposes
+                                    return AlertDialog(
+                                      title: const Text('Tickle Size'),
+                                      content: Text('You entered $value'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -173,44 +177,46 @@ class _CalibrateEncoderState extends State<CalibrateEncoder> {
                           "Target Length:",
                           style: kCardBodyTextStyle,
                         ),
-                        Container(
-                          color: Colors.grey[300],
-                          margin: EdgeInsets.only(
-                            left: 30.0,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.0,
-                          ),
-                          width: 250,
-                          //TODO: Have validator to only accept integers
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  TextStyle(fontSize: 16.0, color: Colors.grey),
-                              border: InputBorder.none,
-                              hintText: "Enter length of image",
+                        Expanded(
+                          child: Container(
+                            color: Colors.grey[300],
+                            margin: EdgeInsets.only(
+                              left: 65.0,
                             ),
-                            controller: _targetLengthController,
-                            onSubmitted: (String value) async {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  //For debugging purposes
-                                  return AlertDialog(
-                                    title: const Text('Tickle Size'),
-                                    content: Text('You entered $value'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                            ),
+                            width: 250,
+                            //TODO: Have validator to only accept integers
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                    fontSize: 16.0, color: Colors.grey),
+                                border: InputBorder.none,
+                                hintText: "Enter length of image",
+                              ),
+                              controller: _targetLengthController,
+                              onSubmitted: (String value) async {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    //For debugging purposes
+                                    return AlertDialog(
+                                      title: const Text('Tickle Size'),
+                                      content: Text('You entered $value'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],
@@ -225,44 +231,46 @@ class _CalibrateEncoderState extends State<CalibrateEncoder> {
                           "Measured Length:",
                           style: kCardBodyTextStyle,
                         ),
-                        Container(
-                          color: Colors.grey[300],
-                          margin: EdgeInsets.only(
-                            left: 30.0,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.0,
-                          ),
-                          width: 250,
-                          //TODO: Have validator to only accept integers
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  TextStyle(fontSize: 16.0, color: Colors.grey),
-                              border: InputBorder.none,
-                              hintText: "Enter length of image",
+                        Expanded(
+                          child: Container(
+                            color: Colors.grey[300],
+                            margin: EdgeInsets.only(
+                              left: 35.0,
                             ),
-                            controller: _measuredLengthController,
-                            onSubmitted: (String value) async {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  //For debugging purposes
-                                  return AlertDialog(
-                                    title: const Text('Tickle Size'),
-                                    content: Text('You entered $value'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                            ),
+                            width: 250,
+                            //TODO: Have validator to only accept integers
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                    fontSize: 16.0, color: Colors.grey),
+                                border: InputBorder.none,
+                                hintText: "Enter length of image",
+                              ),
+                              controller: _measuredLengthController,
+                              onSubmitted: (String value) async {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    //For debugging purposes
+                                    return AlertDialog(
+                                      title: const Text('Tickle Size'),
+                                      content: Text('You entered $value'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],
