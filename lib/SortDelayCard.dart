@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'DpiIniController.dart';
 
 class SortDelayCard extends StatefulWidget {
   @override
@@ -61,6 +62,7 @@ class _SortDelayCardState extends State<SortDelayCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
+                  //Delay
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -113,6 +115,8 @@ class _SortDelayCardState extends State<SortDelayCard> {
                   SizedBox(
                     height: 10.0,
                   ),
+
+                  //Duration
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -166,6 +170,8 @@ class _SortDelayCardState extends State<SortDelayCard> {
                   SizedBox(
                     height: 10.0,
                   ),
+
+                  //Page Offset
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -192,24 +198,32 @@ class _SortDelayCardState extends State<SortDelayCard> {
                           ),
                           controller: _pageOffsetController,
                           onSubmitted: (String value) async {
-                            await showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                //For debugging purposes
-                                return AlertDialog(
-                                  title: const Text('Spit Count'),
-                                  content: Text('You entered $value'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            //converts string to int for condition
+                            int valueInt = int.parse(value);
+
+                            if (valueInt < 0) {
+                              await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  //For debugging purposes
+                                  return AlertDialog(
+                                    title: const Text('Out of Range'),
+                                    content: Text('Enter values above 0'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              writeSettingsFile(
+                                  "METEOR", "iBB_PageOffset", value);
+                            }
                           },
                         ),
                       ),

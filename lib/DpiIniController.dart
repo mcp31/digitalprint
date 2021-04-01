@@ -4,7 +4,7 @@ import 'dart:io';
 //standard file io open file hardcoded path to ini file.
 //File file = new File("C:\\dpi\\sw\\printerInfo.ini");
 
-//file path in mac
+//file path in mac for printerinfo.ini
 File file = new File(
     "/Users/maryplana/Desktop/Projects/OpconfigRewrite/printerinfo.ini");
 

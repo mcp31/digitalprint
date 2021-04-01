@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'DpiIniController.dart';
 
 class BitTickleCard extends StatefulWidget {
   @override
@@ -58,6 +59,7 @@ class _BitTickleCardState extends State<BitTickleCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  //Tickle Size
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -84,24 +86,34 @@ class _BitTickleCardState extends State<BitTickleCard> {
                           ),
                           controller: _tickleSizeController,
                           onSubmitted: (String value) async {
-                            await showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                //For debugging purposes
-                                return AlertDialog(
-                                  title: const Text('Tickle Size'),
-                                  content: Text('You entered $value'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            //converts string to int for condition
+                            int valueInt = int.parse(value);
+
+                            //range 10 can change
+                            if (valueInt > 0 && valueInt <= 10) {
+                              writeSettingsFile("System", "TickleSize", value);
+                            } else {
+                              await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  //TODO: Implement a better way of error handling
+                                  return AlertDialog(
+                                    title:
+                                        const Text('Tickle Size is too high'),
+                                    content:
+                                        Text('Enter values between 0 - 10'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                         ),
                       ),
@@ -110,6 +122,8 @@ class _BitTickleCardState extends State<BitTickleCard> {
                   SizedBox(
                     height: 10.0,
                   ),
+
+                  //Tickle Cycle
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -136,24 +150,33 @@ class _BitTickleCardState extends State<BitTickleCard> {
                           ),
                           controller: _tickleCycleController,
                           onSubmitted: (String value) async {
-                            await showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                //For debugging purposes
-                                return AlertDialog(
-                                  title: const Text('Tickle Cycle'),
-                                  content: Text('You entered $value'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            //converts string to int for condition
+                            int valueInt = int.parse(value);
+
+                            //range 1000 can change
+                            if (valueInt > 0 && valueInt <= 1000) {
+                              writeSettingsFile("System", "TickleCycle", value);
+                            } else {
+                              await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  //TODO: Implement a better way of error handling
+                                  return AlertDialog(
+                                    title: const Text('Out of Range'),
+                                    content:
+                                        Text('Enter values between 0 - 1,000'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                         ),
                       ),
@@ -162,6 +185,8 @@ class _BitTickleCardState extends State<BitTickleCard> {
                   SizedBox(
                     height: 10.0,
                   ),
+
+                  //Spit Count
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -178,7 +203,6 @@ class _BitTickleCardState extends State<BitTickleCard> {
                           horizontal: 10.0,
                         ),
                         width: 250,
-                        //TODO: Have validator to only accept integers
                         child: TextField(
                           decoration: InputDecoration(
                             hintStyle:
@@ -188,24 +212,33 @@ class _BitTickleCardState extends State<BitTickleCard> {
                           ),
                           controller: _spitCountController,
                           onSubmitted: (String value) async {
-                            await showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                //For debugging purposes
-                                return AlertDialog(
-                                  title: const Text('Spit Count'),
-                                  content: Text('You entered $value'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                            //converts string to int for condition
+                            int valueInt = int.parse(value);
+
+                            //range 10000 can change
+                            if (valueInt > 0 && valueInt <= 10000) {
+                              writeSettingsFile("METEOR", "iSpitAmount", value);
+                            } else {
+                              await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  //TODO: Implement a better way of error handling
+                                  return AlertDialog(
+                                    title: const Text('Out of Range'),
+                                    content:
+                                        Text('Enter values between 0 - 10,000'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                         ),
                       ),

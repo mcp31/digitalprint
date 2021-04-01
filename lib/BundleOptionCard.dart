@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'DpiIniController.dart';
 
 class BundleOptionsCard extends StatefulWidget {
   @override
@@ -8,7 +9,8 @@ class BundleOptionsCard extends StatefulWidget {
 
 class _BundleOptionsCardState extends State<BundleOptionsCard> {
   TextEditingController _bundleSizeController;
-  bool _autoBundle = false;
+  bool _autoBundleChecked = false;
+  String _autoBundle = "0";
 
   void initState() {
     super.initState();
@@ -80,24 +82,32 @@ class _BundleOptionsCardState extends State<BundleOptionsCard> {
                             ),
                             controller: _bundleSizeController,
                             onSubmitted: (String value) async {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  //For debugging purposes
-                                  return AlertDialog(
-                                    title: const Text('Bundle Size'),
-                                    content: Text('You entered $value'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              //converts string to int for condition
+                              int valueInt = int.parse(value);
+
+                              if (valueInt < 1) {
+                                await showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    //For debugging purposes
+                                    return AlertDialog(
+                                      title: const Text('Out of Range'),
+                                      content: Text('Enter values above 1'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                writeSettingsFile(
+                                    "METEOR", "iAutoBundleSize", value);
+                              }
                             },
                           ),
                         ),
@@ -123,11 +133,20 @@ class _BundleOptionsCardState extends State<BundleOptionsCard> {
                             ),
                           ],
                         ),
-                        value: _autoBundle,
+                        value: _autoBundleChecked,
                         onChanged: (bool value) {
                           setState(() {
-                            _autoBundle = value;
+                            _autoBundleChecked = value;
                           });
+
+                          if (_autoBundleChecked == true) {
+                            _autoBundle = "1";
+                          } else {
+                            _autoBundle = "0";
+                          }
+
+                          writeSettingsFile(
+                              "METEOR", "bAutoBundle", _autoBundle);
                         },
                       ),
                     ),
