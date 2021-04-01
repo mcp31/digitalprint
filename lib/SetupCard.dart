@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'DpiIniController.dart';
 
 class SetupCard extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class _SetupCardState extends State<SetupCard> {
   TextEditingController _setupWidthController;
 
   bool _mergeSetupPageChecked = false;
+  String _mergeChecked = "0";
 
   void initState() {
     super.initState();
@@ -77,8 +79,8 @@ class _SetupCardState extends State<SetupCard> {
                               horizontal: 10.0,
                             ),
                             width: 250,
-                            //TODO: Have validator to only accept integers
                             child: TextField(
+                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(
                                     fontSize: 16.0, color: Colors.grey),
@@ -87,24 +89,34 @@ class _SetupCardState extends State<SetupCard> {
                               ),
                               controller: _blankCountController,
                               onSubmitted: (String value) async {
-                                await showDialog<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    //For debugging purposes
-                                    return AlertDialog(
-                                      title: const Text('Blank Count'),
-                                      content: Text('You entered $value'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                //converts string to int for condition
+                                int valueInt = int.parse(value);
+
+                                if (valueInt > 0 && valueInt <= 10) {
+                                  writeSettingsFile(
+                                      "System", "BlankCount", value);
+                                } else {
+                                  await showDialog<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      //For debugging purposes
+                                      return AlertDialog(
+                                        title: const Text(
+                                            'Blank Count is too high'),
+                                        content:
+                                            Text('Enter values between 0 - 10'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
                               },
                             ),
                           ),
@@ -141,24 +153,8 @@ class _SetupCardState extends State<SetupCard> {
                               ),
                               controller: _setupWidthController,
                               onSubmitted: (String value) async {
-                                await showDialog<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    //For debugging purposes
-                                    return AlertDialog(
-                                      title: const Text('Setup Width'),
-                                      content: Text('You entered $value'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                writeSettingsFile(
+                                    "System", "DefaultSetupWidth", value);
                               },
                             ),
                           ),
@@ -182,6 +178,15 @@ class _SetupCardState extends State<SetupCard> {
                           setState(() {
                             _mergeSetupPageChecked = value;
                           });
+
+                          if (_mergeSetupPageChecked == true) {
+                            _mergeChecked = "1";
+                          } else {
+                            _mergeChecked = "0";
+                          }
+
+                          writeSettingsFile(
+                              "System", "MergeSetupPage", _mergeChecked);
                         },
                       ),
                     ),
@@ -207,6 +212,9 @@ class _SetupCardState extends State<SetupCard> {
                         ),
                         onPressed: () {
                           //TODO: Add functionality for setup page
+                          writeSettingsFile(
+                              "METEOR", "bUseMeteorScale50", "50");
+                          //This will automatically write to the ini file
                         },
                         child: Text(
                           "Setup Page",
