@@ -221,7 +221,7 @@ class _SortDelayCardState extends State<SortDelayCard> {
                                 },
                               );
                             } else {
-                              writeSettingsFile(
+                              writeSettingsPrintFile(
                                   "METEOR", "iBB_PageOffset", value);
                             }
                           },

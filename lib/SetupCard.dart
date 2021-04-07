@@ -17,6 +17,7 @@ class _SetupCardState extends State<SetupCard> {
   void initState() {
     super.initState();
     _blankCountController = TextEditingController();
+    _blankCountController.text = readSettingsPrintFile("System", "BlankCount");
     _setupWidthController = TextEditingController();
   }
 
@@ -93,7 +94,7 @@ class _SetupCardState extends State<SetupCard> {
                                 int valueInt = int.parse(value);
 
                                 if (valueInt > 0 && valueInt <= 10) {
-                                  writeSettingsFile(
+                                  writeSettingsPrintFile(
                                       "System", "BlankCount", value);
                                 } else {
                                   await showDialog<void>(
@@ -153,7 +154,7 @@ class _SetupCardState extends State<SetupCard> {
                               ),
                               controller: _setupWidthController,
                               onSubmitted: (String value) async {
-                                writeSettingsFile(
+                                writeSettingsPrintFile(
                                     "System", "DefaultSetupWidth", value);
                               },
                             ),
@@ -185,7 +186,7 @@ class _SetupCardState extends State<SetupCard> {
                             _mergeChecked = "0";
                           }
 
-                          writeSettingsFile(
+                          writeSettingsPrintFile(
                               "System", "MergeSetupPage", _mergeChecked);
                         },
                       ),
@@ -212,7 +213,7 @@ class _SetupCardState extends State<SetupCard> {
                         ),
                         onPressed: () {
                           //TODO: Add functionality for setup page
-                          writeSettingsFile(
+                          writeSettingsPrintFile(
                               "METEOR", "bUseMeteorScale50", "50");
                           //This will automatically write to the ini file
                         },

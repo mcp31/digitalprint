@@ -105,7 +105,7 @@ class _BundleOptionsCardState extends State<BundleOptionsCard> {
                                   },
                                 );
                               } else {
-                                writeSettingsFile(
+                                writeSettingsPrintFile(
                                     "METEOR", "iAutoBundleSize", value);
                               }
                             },
@@ -145,7 +145,7 @@ class _BundleOptionsCardState extends State<BundleOptionsCard> {
                             _autoBundle = "0";
                           }
 
-                          writeSettingsFile(
+                          writeSettingsPrintFile(
                               "METEOR", "bAutoBundle", _autoBundle);
                         },
                       ),

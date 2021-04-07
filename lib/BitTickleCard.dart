@@ -91,7 +91,8 @@ class _BitTickleCardState extends State<BitTickleCard> {
 
                             //range 10 can change
                             if (valueInt > 0 && valueInt <= 10) {
-                              writeSettingsFile("System", "TickleSize", value);
+                              writeSettingsPrintFile(
+                                  "System", "TickleSize", value);
                             } else {
                               await showDialog<void>(
                                 context: context,
@@ -155,7 +156,8 @@ class _BitTickleCardState extends State<BitTickleCard> {
 
                             //range 1000 can change
                             if (valueInt > 0 && valueInt <= 1000) {
-                              writeSettingsFile("System", "TickleCycle", value);
+                              writeSettingsPrintFile(
+                                  "System", "TickleCycle", value);
                             } else {
                               await showDialog<void>(
                                 context: context,
@@ -217,7 +219,8 @@ class _BitTickleCardState extends State<BitTickleCard> {
 
                             //range 10000 can change
                             if (valueInt > 0 && valueInt <= 10000) {
-                              writeSettingsFile("METEOR", "iSpitAmount", value);
+                              writeSettingsPrintFile(
+                                  "METEOR", "iSpitAmount", value);
                             } else {
                               await showDialog<void>(
                                 context: context,
