@@ -1,3 +1,4 @@
+import 'package:digital_print/DpiIniController.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
@@ -9,8 +10,10 @@ class ReadPrintCard extends StatefulWidget {
 class _ReadPrintCardState extends State<ReadPrintCard> {
   bool _readPrintChecked = false;
   bool _readLookUp = false;
-  String dropdownValue = 'Option 1';
   bool _showExtraOptions = false;
+
+  String _readLook = "0";
+  String _readPrint = "0";
 
   TextEditingController _readPrintIndexController;
   TextEditingController _readPrintIndexLenController;
@@ -76,10 +79,23 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                       ),
                       value: _readPrintChecked,
                       onChanged: (bool value) {
-                        //TODO: If checked, have a drop down box
                         setState(() {
                           _readPrintChecked = value;
                         });
+
+                        if (_readPrintChecked == true) {
+                          _readPrint = "1";
+
+                          setState(() {
+                            _readLookUp = false;
+                            _showExtraOptions = false;
+                          });
+                        } else {
+                          _readPrint = "0";
+                        }
+
+                        writeSettingsWinimFile(
+                            "System", "readPrintLookup", _readPrint);
                       },
                     ),
                   ),
@@ -104,6 +120,19 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                           _readLookUp = value;
                           _showExtraOptions = value;
                         });
+
+                        if (_readLookUp == true) {
+                          _readLook = "2";
+
+                          setState(() {
+                            _readPrintChecked = false;
+                          });
+                        } else {
+                          _readLook = "0";
+                        }
+
+                        writeSettingsWinimFile(
+                            "System", "readPrintLookup", _readLook);
                       },
                     ),
                   ),
@@ -113,11 +142,6 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                   _showExtraOptions ? _extraOption() : Text(""),
                 ],
               ),
-              // Container(
-              //   padding: EdgeInsets.only(bottom: 60.0, left: 20.0),
-              //   child: _showDropDown ? _extraOption() : Text(""),
-              // ),
-              // _showDropDown ? _dropDown() : Text(""),
               Expanded(
                 child: Container(
                   height: _showExtraOptions ? 215 : 140,
@@ -172,24 +196,10 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                 ),
                 controller: _readPrintIndexController,
                 onSubmitted: (String value) async {
-                  await showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      //For debugging purposes
-                      return AlertDialog(
-                        title: const Text('Read Print Index'),
-                        content: Text('You entered $value'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  //converts string to int for condition
+                  int valueInt = int.parse(value);
+
+                  writeSettingsWinimFile("System", "readPrintLookupIdx", value);
                 },
               ),
             ),
@@ -214,7 +224,6 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                 horizontal: 10.0,
               ),
               width: 250,
-              //TODO: Have validator to only accept integers
               child: TextField(
                 decoration: InputDecoration(
                   hintStyle: TextStyle(fontSize: 16.0, color: Colors.grey),
@@ -223,24 +232,32 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
                 ),
                 controller: _readPrintIndexLenController,
                 onSubmitted: (String value) async {
-                  await showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      //For debugging purposes
-                      return AlertDialog(
-                        title: const Text('Read Print Index'),
-                        content: Text('You entered $value'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  //converts string to int for condition
+                  int valueInt = int.parse(value);
+
+                  //range 10000 can change
+                  if (valueInt >= 0) {
+                    writeSettingsWinimFile("System", "readPrintIdxLen", value);
+                  } else {
+                    await showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        //TODO: Implement a better way of error handling
+                        return AlertDialog(
+                          title: const Text('Out of Range'),
+                          content: Text('Value must be 0 or more'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
               ),
             ),

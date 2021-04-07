@@ -19,6 +19,8 @@ class _SetupCardState extends State<SetupCard> {
     _blankCountController = TextEditingController();
     _blankCountController.text = readSettingsPrintFile("System", "BlankCount");
     _setupWidthController = TextEditingController();
+    _setupWidthController.text =
+        readSettingsPrintFile("System", "DefaultSetupWidth");
   }
 
   void dispose() {
