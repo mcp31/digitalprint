@@ -21,7 +21,12 @@ class _ReadPrintCardState extends State<ReadPrintCard> {
   void initState() {
     super.initState();
     _readPrintIndexController = TextEditingController();
+    _readPrintIndexController.text =
+        readSettingsWinimFile("System", "readPrintLookupIdx");
+
     _readPrintIndexLenController = TextEditingController();
+    _readPrintIndexLenController.text =
+        readSettingsWinimFile("System", "readPrintIdxLen");
   }
 
   void dispose() {

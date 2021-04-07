@@ -15,6 +15,8 @@ class _BundleOptionsCardState extends State<BundleOptionsCard> {
   void initState() {
     super.initState();
     _bundleSizeController = TextEditingController();
+    _bundleSizeController.text =
+        readSettingsPrintFile("METEOR", "iAutoBundleSize");
   }
 
   void dispose() {

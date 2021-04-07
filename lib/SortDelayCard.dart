@@ -19,7 +19,10 @@ class _SortDelayCardState extends State<SortDelayCard> {
     super.initState();
     _delayController = TextEditingController();
     _durationController = TextEditingController();
+
     _pageOffsetController = TextEditingController();
+    _pageOffsetController.text =
+        readSettingsPrintFile("METEOR", "iBB_PageOffset");
   }
 
   void dispose() {

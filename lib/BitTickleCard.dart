@@ -15,8 +15,14 @@ class _BitTickleCardState extends State<BitTickleCard> {
   void initState() {
     super.initState();
     _tickleSizeController = TextEditingController();
+    _tickleSizeController.text = readSettingsPrintFile("System", "TickleSize");
+
     _tickleCycleController = TextEditingController();
+    _tickleCycleController.text =
+        readSettingsPrintFile("System", "TickleCycle");
+
     _spitCountController = TextEditingController();
+    _spitCountController.text = readSettingsPrintFile("METEOR", "iSpitAmount");
   }
 
   void dispose() {
