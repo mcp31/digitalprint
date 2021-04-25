@@ -1,4 +1,5 @@
 import 'package:digital_print/constants.dart';
+import 'package:digital_print/xOffsets/ModulesHomePage.dart';
 import 'package:flutter/material.dart';
 import 'OpConfig/HomePage.dart';
 
@@ -22,7 +23,14 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue[700],
         scaffoldBackgroundColor: kOffWhite,
       ),
-      home: MyHomePage(),
+
+      /*
+      Currently, there's no way to execute different screens
+      at the command line
+       */
+
+      //home: MyHomePage(),
+      home: ModulesHomePage(),
     );
   }
 }
