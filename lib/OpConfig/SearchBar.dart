@@ -1,13 +1,13 @@
-import 'package:digital_print/BitTickleCard.dart';
-import 'package:digital_print/BundleOptionCard.dart';
-import 'package:digital_print/CalibrateEncoder.dart';
-import 'package:digital_print/IOControl.dart';
-import 'package:digital_print/MeteorConfigCard.dart';
-import 'package:digital_print/ReadPrintCard.dart';
-import 'package:digital_print/SetupCard.dart';
+import 'package:digital_print/OpConfig/BitTickleCard.dart';
+import 'package:digital_print/OpConfig/BundleOptionCard.dart';
+import 'package:digital_print/OpConfig/CalibrateEncoder.dart';
+import 'package:digital_print/OpConfig/IOControl.dart';
+import 'package:digital_print/OpConfig/MeteorConfigCard.dart';
+import 'package:digital_print/OpConfig/ReadPrintCard.dart';
+import 'package:digital_print/OpConfig/SetupCard.dart';
 import 'SortDelayCard.dart';
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../constants.dart';
 
 class CardSearch extends SearchDelegate<String> {
   @override

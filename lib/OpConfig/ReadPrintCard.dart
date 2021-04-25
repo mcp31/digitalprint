@@ -1,6 +1,6 @@
 import 'package:digital_print/DpiIniController.dart';
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../constants.dart';
 
 class ReadPrintCard extends StatefulWidget {
   @override

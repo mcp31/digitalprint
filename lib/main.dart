@@ -1,8 +1,14 @@
 import 'package:digital_print/constants.dart';
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
+import 'OpConfig/HomePage.dart';
 
-void main() {
+var startPara;
+
+void main(List<String> args) {
+  //can have parameters; "hardcoding
+  print("Arguments");
+  print(args.toString());
+  startPara = args.toString();
   runApp(MyApp());
 }
 

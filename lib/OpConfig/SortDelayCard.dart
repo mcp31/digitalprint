@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
-import 'DpiIniController.dart';
+import '../constants.dart';
+import '../DpiIniController.dart';
 
 class SortDelayCard extends StatefulWidget {
   @override
