@@ -4,6 +4,7 @@ import 'package:digital_print/OpConfig/CalibrateEncoder.dart';
 import 'package:digital_print/OpConfig/IOControl.dart';
 import 'package:digital_print/OpConfig/MeteorConfigCard.dart';
 import 'package:digital_print/OpConfig/ReadPrintCard.dart';
+import 'package:digital_print/OpConfig/RepeatsCard.dart';
 import 'package:digital_print/OpConfig/SetupCard.dart';
 import 'SortDelayCard.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 30.0,
               ),
               CalibrateEncoder(),
+              SizedBox(
+                height: 30.0,
+              ),
+              RepeatsCard(),
               SizedBox(
                 height: 30.0,
               ),
