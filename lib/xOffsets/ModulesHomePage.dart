@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:digital_print/constants.dart';
 import 'ModuleClass.dart';
+import 'HeadClass.dart';
 
 //debugging purposes
-int numberOfModules = 4;
-
-//TODO: Make default orientation to be landscape
+var headArray = [4, 3, 2, 1];
 
 class ModulesHomePage extends StatefulWidget {
   @override
@@ -13,19 +12,22 @@ class ModulesHomePage extends StatefulWidget {
 }
 
 class _ModulesHomePageState extends State<ModulesHomePage> {
-  List<Module> moduleList = []; //dynamic growing list
+  List<Head> headList = [];
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Implement with parser here
-
-    for (int i = 0; i < numberOfModules; i++) {
-      moduleList
-          .add(Module(label: "${i + 1}", moduleValue: 0, incrementAmt: 1));
+    //Implement with parser here
+    //Creates a head object with the number of modules
+    for (int i = 0; i < headArray.length; i++) {
+      headList.add(
+        Head(
+          numberOfModules: headArray[i],
+          moduleList: [],
+        ),
+      );
     }
-
-    moduleList.length =
-        numberOfModules; //Limits the amount of modules being printed out
+    //Limits the amount of head UI being printed
+    headList.length = headArray.length;
 
     return Scaffold(
       appBar: AppBar(
@@ -34,121 +36,53 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 50.0,
-          vertical: 20.0,
+          //vertical: 20.0,
         ),
-
-        //Start Head Code
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              "Head #1",
-              style: kCardHeaderTextStyle,
-            ),
-
-            //Container housing the graphic and module count
-            Container(
-              margin: EdgeInsets.symmetric(
-                vertical: 10.0,
-              ),
-              padding: EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 20.0,
-              ),
-              decoration: BoxDecoration(
-                color: kOffWhite,
-                borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 2,
-                    offset: Offset(1, 1),
-                    color: Colors.grey,
-                  ),
-                ],
-              ),
-              child: Column(
-                children: <Widget>[
-                  //Heads
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.5,
-                        color: Colors.grey,
-                      ),
+        //Creates head with its number of modules
+        child: ListView.builder(
+          itemCount: headList.length,
+          itemBuilder: (BuildContext context, int index) {
+            //add module for the UI in a head
+            for (int i = 0; i < headList[index].numberOfModules; i++) {
+              headList[index].moduleList.add(
+                    Module(
+                      label: "${i + 1}",
+                      moduleValue: 0,
+                      incrementAmt: 10,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 600,
-                          height: 100,
-                          child: Center(
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: numberOfModules,
-                              itemBuilder: (BuildContext context, int index) {
-                                if (index.isEven) {
-                                  return Column(
-                                    children: <Widget>[
-                                      graphicModule(index + 1),
-                                      SizedBox(
-                                        height: 50,
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  return Column(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height: 50,
-                                      ),
-                                      graphicModule(index + 1),
-                                    ],
-                                  );
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  );
+            }
 
-                  SizedBox(
-                    height: 20,
-                  ),
+            //Limits the amount of module UI being printed
+            headList[index].moduleList.length = headList[index].numberOfModules;
 
-                  //Modules
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      //TODO: Make it dynamic and use its own value
-                      children: <Widget>[for (var i in moduleList) module(i)],
-                    ),
-                  ),
-                ],
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
+              child: makeHead(
+                headList[index].numberOfModules,
+                index + 1,
+                headList[index].moduleList,
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
   }
 
   //Head Skeleton Code
-  Widget head(int moduleCount, int headCount) {
-    Column(
+  Widget makeHead(int moduleCount, int headLabel, List moduleList) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          "Head #$headCount",
+          "Head #$headLabel",
           style: kCardHeaderTextStyle,
         ),
 
         //Container housing the graphic and module count
         Container(
+          height: 310,
           margin: EdgeInsets.symmetric(
             vertical: 10.0,
           ),
@@ -173,44 +107,46 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 height: 150,
+
                 decoration: BoxDecoration(
+                  color: Colors.yellow[200],
                   border: Border.all(
-                    width: 1.5,
-                    color: Colors.grey,
+                    width: .8,
+                    color: Colors.grey[800],
                   ),
                 ),
+
+                //Creates the graphic of the modules
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: 600,
                       height: 100,
-                      child: Center(
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: numberOfModules,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (index.isEven) {
-                              return Column(
-                                children: <Widget>[
-                                  graphicModule(index + 1),
-                                  SizedBox(
-                                    height: 50,
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return Column(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 50,
-                                  ),
-                                  graphicModule(index + 1),
-                                ],
-                              );
-                            }
-                          },
-                        ),
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: moduleCount,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index.isEven) {
+                            return Column(
+                              children: <Widget>[
+                                makeGraphicModule(index + 1),
+                                SizedBox(
+                                  height: 50,
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 50,
+                                ),
+                                makeGraphicModule(index + 1),
+                              ],
+                            );
+                          }
+                        },
                       ),
                     ),
                   ],
@@ -221,12 +157,17 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                 height: 20,
               ),
 
-              //Modules
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  //TODO: Make it dynamic and use its own value
-                  children: <Widget>[for (var i in moduleList) module(i)],
+              //Creates the UI of the modules
+              Container(
+                height: 95,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: moduleList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return makeModule(
+                      moduleList[index],
+                    );
+                  },
                 ),
               ),
             ],
@@ -237,25 +178,27 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
   }
 
   //Module Skeleton Code
-  Widget module(Module module1) {
+  Widget makeModule(Module module1) {
     return Row(
       children: <Widget>[
         Column(
           children: <Widget>[
             Text(
               "Module #${module1.getModuleLabel}",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 20),
             ),
             Container(
               color: Colors.grey[300],
-              margin: EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 5,
+              margin: EdgeInsets.only(
+                left: 30.0,
+                right: 10,
+                top: 5,
+                bottom: 5,
               ),
               padding: EdgeInsets.all(
                 12,
               ),
-              width: 120,
+              width: 170,
               height: 60,
               child: Text(
                 "${module1.getModuleValue}",
@@ -319,20 +262,23 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
     );
   }
 
-  Widget graphicModule(int modNum) {
+  Widget makeGraphicModule(int modNum) {
     return Container(
       width: 150,
       height: 50,
       decoration: BoxDecoration(
+        color: Colors.green[400],
         border: Border.all(
           width: 1,
-          color: Colors.grey,
+          color: Colors.green[400],
         ),
       ),
       child: Center(
         child: Text(
-          "Module $modNum",
-          style: TextStyle(fontSize: 25),
+          "Mod $modNum",
+          style: TextStyle(
+            fontSize: 25,
+          ),
         ),
       ),
     );
