@@ -11,3 +11,4 @@ const kCardHeaderTextStyle = TextStyle(
 
 const kCardBodyTextStyle = TextStyle(fontSize: 18.0);
 const kButtonTextStyle = TextStyle(fontSize: 18.0);
+const kButtonSize = 30.0;
