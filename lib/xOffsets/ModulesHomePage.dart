@@ -10,6 +10,7 @@ final xmlParser = new SysTypeParser(
 );
 
 var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
+//var headArray = [5, 4, 3, 2, 1];
 var offSetsArray = xmlParser.getXoffsets(); //[4, 3, 2, 1];
 
 class ModulesHomePage extends StatefulWidget {
@@ -20,28 +21,48 @@ class ModulesHomePage extends StatefulWidget {
 class _ModulesHomePageState extends State<ModulesHomePage> {
   List<Head> headList = [];
   final ScrollController _scrollController = ScrollController();
+  List<int> deltaList = [];
+  List<TextEditingController> textList = [];
+
+  TextEditingController _deltaController;
+  @override
+  void initState() {
+    super.initState();
+    for (TextEditingController i in textList) {
+      i = TextEditingController();
+    }
+  }
+
+  @override
+  void dispose() {
+    for (TextEditingController i in textList) {
+      i.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     //Implement with parser here
     //Creates a head object with the number of modules
+    //var offSetIndex = 0;
 
     for (int i = 0; i < headArray.length; i++) {
-      print("i = $i");
-
       headList.add(
         Head(
           numberOfModules: headArray[i],
           moduleList: [],
         ),
       );
-      //print(headArray[i]);
+      deltaList.add(0);
+      textList.add(TextEditingController());
     }
     //Limits the amount of head UI being printed
     headList.length = headArray.length;
 
-    print("headArray.length = ${headArray.length}");
-    print("headList.length = ${headList.length}");
+    // print("headArray.length = ${headArray.length}");
+    // print("headList.length = ${headList.length}");
+    var offSetIndex = 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -53,12 +74,13 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
           controller: _scrollController,
           itemCount: headList.length,
           itemBuilder: (BuildContext context, int index) {
-            var offSetIndex = 0;
+            //var offSetIndex = 0;
             //add module for the UI in a head
             for (int i = 0; i < headList[index].numberOfModules; i++) {
               headList[index].moduleList.add(
                     Module(
                       label: "${i + 1}",
+                      //CAUSING AN ERROR WHEN SCROLLING AT THE VERY BOTTOM/TOP
                       moduleValue: offSetsArray[offSetIndex],
                       incrementAmt: 10,
                     ),
@@ -179,36 +201,39 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                 ),
 
                 //Creates the UI of the modules
-                // Container(
-                //   height: 95,
-                //   child: ListView.builder(
-                //     scrollDirection: Axis.horizontal,
-                //     itemCount: moduleList.length,
-                //     itemBuilder: (BuildContext context, int index) {
-                //       return makeModule(
-                //         moduleList[index],
-                //       );
-                //     },
-                //   ),
-                // ),
-
-                //Made for 4 or more modules
                 Container(
-                  height: 110,
-                  color: Colors.purpleAccent,
-                  child: Scrollbar(
-                    child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                        ),
-                        itemCount: moduleList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return makeModule(
-                            moduleList[index],
-                          );
-                        }),
+                  height: 95,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: moduleList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return makeModule(
+                        moduleList[index],
+                      );
+                    },
                   ),
                 ),
+
+                //TODO: How to cleanly display more than 4 modules
+                // //Made for 4 or more modules
+                // Container(
+                //   height: 110,
+                //   color: Colors.purpleAccent,
+                //   child: Scrollbar(
+                //     child: GridView.builder(
+                //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //           crossAxisCount: 3,
+                //           mainAxisSpacing: 0,
+                //         ),
+                //         padding: EdgeInsets.zero,
+                //         itemCount: moduleList.length,
+                //         itemBuilder: (BuildContext context, int index) {
+                //           return makeModule(
+                //             moduleList[index],
+                //           );
+                //         }),
+                //   ),
+                // ),
 
                 SizedBox(
                   height: 20,
@@ -234,6 +259,7 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                       ),
                       width: textBoxWidth,
                       child: TextFormField(
+                        controller: textList[headLabel - 1],
                         decoration: InputDecoration(
                           filled: true,
                           border: InputBorder.none,
@@ -248,6 +274,12 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                     ElevatedButton(
                       onPressed: () {
                         //TODO: Add values to all
+                        deltaList[headLabel - 1] =
+                            int.parse(textList[headLabel - 1].text);
+                        setState(() {
+                          headList[headLabel - 1]
+                              .addDelta(deltaList[headLabel - 1]);
+                        });
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -287,14 +319,14 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
   }
 
   //Module Skeleton Code
-  Widget makeModule(Module module1) {
+  Widget makeModule(Module module) {
     return Row(
       children: <Widget>[
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Module #${module1.getModuleLabel}",
+              "Module #${module.getModuleLabel}",
               style: TextStyle(fontSize: 20),
             ),
             Container(
@@ -316,7 +348,7 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
               width: 150,
               height: 60,
               child: Text(
-                "${module1.getModuleValue}",
+                "${module.getModuleValue}",
                 style: TextStyle(fontSize: 30),
                 textAlign: TextAlign.center,
               ),
@@ -335,7 +367,7 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    module1.add();
+                    module.add();
                   });
                 },
                 child: Container(
@@ -357,8 +389,8 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    if (module1.getModuleValue > 0) {
-                      module1.subtract();
+                    if (module.getModuleValue > 0) {
+                      module.subtract();
                     }
                   });
                 },
