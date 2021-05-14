@@ -80,12 +80,14 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
               headList[index].moduleList.add(
                     Module(
                       label: "${i + 1}",
-                      //CAUSING AN ERROR WHEN SCROLLING AT THE VERY BOTTOM/TOP
                       moduleValue: offSetsArray[offSetIndex],
                       incrementAmt: 10,
                     ),
                   );
               offSetIndex++;
+              if (offSetIndex >= offSetsArray.length) {
+                offSetIndex = 0;
+              }
             }
 
             //Limits the amount of module UI being printed
