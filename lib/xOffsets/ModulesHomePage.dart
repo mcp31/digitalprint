@@ -9,8 +9,8 @@ final xmlParser = new SysTypeParser(
   '/Users/maryplana/Desktop/Projects/OpconfigRewrite/SysTypeXml.xml',
 );
 
-var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
-//var headArray = [5, 4, 3, 2, 1];
+//var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
+var headArray = [10, 8, 6, 4, 2];
 var offSetsArray = xmlParser.getXoffsets(); //[4, 3, 2, 1];
 
 class ModulesHomePage extends StatefulWidget {
@@ -23,8 +23,8 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
   final ScrollController _scrollController = ScrollController();
   List<int> deltaList = [];
   List<TextEditingController> textList = [];
+  double containerWidth;
 
-  TextEditingController _deltaController;
   @override
   void initState() {
     super.initState();
@@ -45,7 +45,6 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
   Widget build(BuildContext context) {
     //Implement with parser here
     //Creates a head object with the number of modules
-    //var offSetIndex = 0;
 
     for (int i = 0; i < headArray.length; i++) {
       headList.add(
@@ -60,8 +59,6 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
     //Limits the amount of head UI being printed
     headList.length = headArray.length;
 
-    // print("headArray.length = ${headArray.length}");
-    // print("headList.length = ${headList.length}");
     var offSetIndex = 0;
 
     return Scaffold(
@@ -113,6 +110,8 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
   Widget makeHead(
       int moduleCount, int headLabel, List moduleList, BuildContext context) {
     double textBoxWidth = MediaQuery.of(context).size.width / 4;
+    double graphicModuleContainerWidth =
+        MediaQuery.of(context).size.width / 1.2;
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: 40.0,
@@ -166,16 +165,27 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        width: 600,
+                        width: graphicModuleContainerWidth,
+                        //width: 700,
                         height: 100,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: moduleCount,
                           itemBuilder: (BuildContext context, int index) {
+                            /*
+                            Makes graphicModule decrease in size as more
+                            modules are being displayed
+                             */
+                            if (moduleCount > 6) {
+                              containerWidth = 112.5;
+                            } else {
+                              containerWidth = 150;
+                            }
+
                             if (index.isEven) {
                               return Column(
                                 children: <Widget>[
-                                  makeGraphicModule(index + 1),
+                                  makeGraphicModule(index + 1, containerWidth),
                                   SizedBox(
                                     height: 50,
                                   ),
@@ -187,7 +197,7 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                                   SizedBox(
                                     height: 50,
                                   ),
-                                  makeGraphicModule(index + 1),
+                                  makeGraphicModule(index + 1, containerWidth),
                                 ],
                               );
                             }
@@ -217,7 +227,7 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                 ),
 
                 //TODO: How to cleanly display more than 4 modules
-                // //Made for 4 or more modules
+                //Made for 4 or more modules
                 // Container(
                 //   height: 110,
                 //   color: Colors.purpleAccent,
@@ -294,24 +304,24 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                   ],
                 ),
 
-                //Apply button at the bottom right
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: () {
-                        //TODO: set xoffsets to these values
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          "Apply",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // //Apply button at the bottom right
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: <Widget>[
+                //     ElevatedButton(
+                //       onPressed: () {
+                //         //TODO: set xoffsets to these values
+                //       },
+                //       child: Padding(
+                //         padding: const EdgeInsets.symmetric(vertical: 8.0),
+                //         child: Text(
+                //           "Apply",
+                //           style: TextStyle(fontSize: 20),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -416,9 +426,22 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
     );
   }
 
-  Widget makeGraphicModule(int modNum) {
+  Widget makeGraphicModule(int modNum, double containerWidth) {
+    /*
+    Maybe shrink the size the more module is displayed on
+    the container
+     */
+    // double containerWidth;
+    //
+    // if (modNum >= 6) {
+    //   containerWidth = 100;
+    // } else {
+    //   containerWidth = 150;
+    // }
+
     return Container(
-      width: 150,
+      width: containerWidth,
+      //width: 150,
       height: 50,
       decoration: BoxDecoration(
         color: Colors.green[400],
