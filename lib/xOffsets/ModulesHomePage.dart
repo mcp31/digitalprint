@@ -6,11 +6,11 @@ import 'HeadClass.dart';
 
 //debugging purposes
 final xmlParser = new SysTypeParser(
-  '/Users/maryplana/Desktop/Projects/OpconfigRewrite/SysTypeXml.xml',
+  "/Users/maryplana/Desktop/Projects/OpconfigRewrite/SysTypeXml.xml",
 );
 
-//var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
-var headArray = [10, 8, 6, 4, 2];
+var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
+//var headArray = [10, 8, 6, 4, 2];
 var offSetsArray = xmlParser.getXoffsets(); //[4, 3, 2, 1];
 
 class ModulesHomePage extends StatefulWidget {
@@ -20,9 +20,11 @@ class ModulesHomePage extends StatefulWidget {
 
 class _ModulesHomePageState extends State<ModulesHomePage> {
   List<Head> headList = [];
-  final ScrollController _scrollController = ScrollController();
   List<int> deltaList = [];
   List<TextEditingController> textList = [];
+  int headIndex = 0;
+
+  final ScrollController _scrollController = ScrollController();
   double containerWidth;
 
   @override
@@ -38,14 +40,13 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
     for (TextEditingController i in textList) {
       i.dispose();
     }
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //Implement with parser here
     //Creates a head object with the number of modules
-
     for (int i = 0; i < headArray.length; i++) {
       headList.add(
         Head(
@@ -60,6 +61,7 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
     headList.length = headArray.length;
 
     var offSetIndex = 0;
+    List<String> newValues = [];
 
     return Scaffold(
       appBar: AppBar(
@@ -67,39 +69,85 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
       ),
       body: Scrollbar(
         controller: _scrollController,
-        child: ListView.builder(
+        child: ListView(
           controller: _scrollController,
-          itemCount: headList.length,
-          itemBuilder: (BuildContext context, int index) {
-            //var offSetIndex = 0;
-            //add module for the UI in a head
-            for (int i = 0; i < headList[index].numberOfModules; i++) {
-              headList[index].moduleList.add(
-                    Module(
-                      label: "${i + 1}",
-                      moduleValue: offSetsArray[offSetIndex],
-                      incrementAmt: 10,
-                    ),
-                  );
-              offSetIndex++;
-              if (offSetIndex >= offSetsArray.length) {
-                offSetIndex = 0;
-              }
-            }
+          children: <Widget>[
+            ListView.builder(
+              physics: ScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: headList.length,
+              itemBuilder: (BuildContext context, int index) {
+                //add module for the UI in a head
+                for (int i = 0; i < headList[index].numberOfModules; i++) {
+                  headList[index].moduleList.add(
+                        Module(
+                          label: "${i + 1}",
+                          moduleValue: offSetsArray[offSetIndex],
+                          incrementAmt: 10,
+                        ),
+                      );
+                  offSetIndex++;
+                  if (offSetIndex >= offSetsArray.length) {
+                    offSetIndex = 0;
+                  }
+                }
 
-            //Limits the amount of module UI being printed
-            headList[index].moduleList.length = headList[index].numberOfModules;
+                //Limits the amount of module UI being printed
+                headList[index].moduleList.length =
+                    headList[index].numberOfModules;
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: makeHead(
-                headList[index].numberOfModules,
-                index + 1,
-                headList[index].moduleList,
-                context,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: makeHead(
+                    headList[index].numberOfModules,
+                    index + 1,
+                    headList[index].moduleList,
+                    context,
+                  ),
+                );
+              },
+            ),
+
+            //Apply Button
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 20,
               ),
-            );
-          },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: () {
+                      //Is there a better/cleaner way to do this?
+
+                      //get module values for each head
+                      for (int i = 0; i < headList.length; i++) {
+                        for (final i in headList[i].moduleList) {
+                          newValues.add(i.moduleValue.toString());
+                        }
+                      }
+
+                      //debugging purposes
+                      for (int i = 0; i < offSetsArray.length; i++) {
+                        print("new values = ${newValues[i]}");
+                      }
+
+                      //!!! - String not updating the values in xml file
+                      xmlParser.setXoffsets(newValues);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      child: Text(
+                        "Apply Changes",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         isAlwaysShown: true,
       ),
@@ -151,7 +199,6 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   height: 150,
-
                   decoration: BoxDecoration(
                     color: Colors.yellow[200],
                     border: Border.all(
@@ -166,7 +213,6 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                     children: <Widget>[
                       Container(
                         width: graphicModuleContainerWidth,
-                        //width: 700,
                         height: 100,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -225,28 +271,6 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                     },
                   ),
                 ),
-
-                //TODO: How to cleanly display more than 4 modules
-                //Made for 4 or more modules
-                // Container(
-                //   height: 110,
-                //   color: Colors.purpleAccent,
-                //   child: Scrollbar(
-                //     child: GridView.builder(
-                //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //           crossAxisCount: 3,
-                //           mainAxisSpacing: 0,
-                //         ),
-                //         padding: EdgeInsets.zero,
-                //         itemCount: moduleList.length,
-                //         itemBuilder: (BuildContext context, int index) {
-                //           return makeModule(
-                //             moduleList[index],
-                //           );
-                //         }),
-                //   ),
-                // ),
-
                 SizedBox(
                   height: 20,
                 ),
@@ -285,9 +309,12 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        //TODO: Add values to all
+                        //Gets the text in the textfield and turn it into an int
                         deltaList[headLabel - 1] =
                             int.parse(textList[headLabel - 1].text);
+
+                        //Changes the value DISPLAYED on the modules
+                        //in the Head class
                         setState(() {
                           headList[headLabel - 1]
                               .addDelta(deltaList[headLabel - 1]);
@@ -303,25 +330,6 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                     ),
                   ],
                 ),
-
-                // //Apply button at the bottom right
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: <Widget>[
-                //     ElevatedButton(
-                //       onPressed: () {
-                //         //TODO: set xoffsets to these values
-                //       },
-                //       child: Padding(
-                //         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                //         child: Text(
-                //           "Apply",
-                //           style: TextStyle(fontSize: 20),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
@@ -427,21 +435,8 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
   }
 
   Widget makeGraphicModule(int modNum, double containerWidth) {
-    /*
-    Maybe shrink the size the more module is displayed on
-    the container
-     */
-    // double containerWidth;
-    //
-    // if (modNum >= 6) {
-    //   containerWidth = 100;
-    // } else {
-    //   containerWidth = 150;
-    // }
-
     return Container(
       width: containerWidth,
-      //width: 150,
       height: 50,
       decoration: BoxDecoration(
         color: Colors.green[400],
