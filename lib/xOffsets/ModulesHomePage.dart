@@ -9,8 +9,8 @@ final xmlParser = new SysTypeParser(
   "/Users/maryplana/Desktop/Projects/OpconfigRewrite/SysTypeXml.xml",
 );
 
-var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
-//var headArray = [10, 8, 6, 4, 2];
+//var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
+var headArray = [10, 8, 6, 4, 2];
 var offSetsArray = xmlParser.getXoffsets(); //[4, 3, 2, 1];
 
 class ModulesHomePage extends StatefulWidget {
@@ -130,44 +130,6 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                 );
               },
             ),
-
-            // //Apply Button
-            // Container(
-            //   margin: EdgeInsets.symmetric(
-            //     horizontal: 40,
-            //     vertical: 20,
-            //   ),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.end,
-            //     children: <Widget>[
-            //       ElevatedButton(
-            //         onPressed: () {
-            //           //Is there a better/cleaner way to do this?
-            //
-            //           //get module values for each head
-            //           for (int i = 0; i < headList.length; i++) {
-            //             for (final i in headList[i].moduleList) {
-            //               newValues.add(i.moduleValue.toString());
-            //             }
-            //           }
-            //
-            //           //debugging purposes
-            //           for (int i = 0; i < offSetsArray.length; i++) {
-            //             print("new values = ${newValues[i]}");
-            //           }
-            //           xmlParser.setXoffsets(newValues);
-            //         },
-            //         child: Padding(
-            //           padding: const EdgeInsets.symmetric(vertical: 15.0),
-            //           child: Text(
-            //             "Apply Changes",
-            //             style: TextStyle(fontSize: 20),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
         isAlwaysShown: true,
@@ -252,7 +214,8 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                             if (index.isEven) {
                               return Column(
                                 children: <Widget>[
-                                  makeGraphicModule(index + 1, containerWidth),
+                                  makeGraphicModule(
+                                      index + 1, containerWidth, moduleCount),
                                   SizedBox(
                                     height: 50,
                                   ),
@@ -264,7 +227,8 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
                                   SizedBox(
                                     height: 50,
                                   ),
-                                  makeGraphicModule(index + 1, containerWidth),
+                                  makeGraphicModule(
+                                      index + 1, containerWidth, moduleCount),
                                 ],
                               );
                             }
@@ -455,25 +419,90 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
     );
   }
 
-  Widget makeGraphicModule(int modNum, double containerWidth) {
-    return Container(
-      width: containerWidth,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.green[400],
-        border: Border.all(
-          width: 1,
+  Widget makeGraphicModule(int modNum, double containerWidth, int moduleCount) {
+    if (modNum == 1 && modNum == moduleCount) {
+      return Container(
+        width: containerWidth,
+        height: 50,
+        decoration: BoxDecoration(
           color: Colors.green[400],
-        ),
-      ),
-      child: Center(
-        child: Text(
-          "Mod $modNum",
-          style: TextStyle(
-            fontSize: 25,
+          border: Border.all(
+            width: 2,
+            color: kSemiBlack,
           ),
         ),
-      ),
-    );
+        child: Center(
+          child: Text(
+            "Mod $modNum",
+            style: TextStyle(
+              fontSize: 25,
+            ),
+          ),
+        ),
+      );
+    } else if (modNum == 1 && modNum != moduleCount) {
+      return Container(
+        width: containerWidth,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.green[400],
+          border: Border(
+            top: BorderSide(width: 2, color: kSemiBlack),
+            bottom: BorderSide(width: 2, color: kSemiBlack),
+            left: BorderSide(width: 2, color: kSemiBlack),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            "Mod $modNum",
+            style: TextStyle(
+              fontSize: 25,
+            ),
+          ),
+        ),
+      );
+    } else if (modNum.isEven && modNum != moduleCount ||
+        modNum.isOdd && modNum != moduleCount) {
+      return Container(
+        width: containerWidth,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.green[400],
+          border: Border(
+            top: BorderSide(width: 2, color: kSemiBlack),
+            bottom: BorderSide(width: 2, color: kSemiBlack),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            "Mod $modNum",
+            style: TextStyle(
+              fontSize: 25,
+            ),
+          ),
+        ),
+      );
+    } else if (modNum == moduleCount) {
+      return Container(
+        width: containerWidth,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.green[400],
+          border: Border(
+            top: BorderSide(width: 2, color: kSemiBlack),
+            bottom: BorderSide(width: 2, color: kSemiBlack),
+            right: BorderSide(width: 2, color: kSemiBlack),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            "Mod $modNum",
+            style: TextStyle(
+              fontSize: 25,
+            ),
+          ),
+        ),
+      );
+    }
   }
 }
