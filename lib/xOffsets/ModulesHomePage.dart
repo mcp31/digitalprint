@@ -67,6 +67,29 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
       appBar: AppBar(
         title: Text("xOffsets"),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text(
+          "Apply",
+          style: TextStyle(fontSize: 20),
+        ),
+        icon: Icon(Icons.arrow_upward),
+        onPressed: () {
+          //Is there a better/cleaner way to do this?
+
+          //get module values for each head
+          for (int i = 0; i < headList.length; i++) {
+            for (final i in headList[i].moduleList) {
+              newValues.add(i.moduleValue.toString());
+            }
+          }
+
+          //debugging purposes
+          for (int i = 0; i < offSetsArray.length; i++) {
+            print("new values = ${newValues[i]}");
+          }
+          xmlParser.setXoffsets(newValues);
+        },
+      ),
       body: Scrollbar(
         controller: _scrollController,
         child: ListView(
@@ -108,45 +131,43 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
               },
             ),
 
-            //Apply Button
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  ElevatedButton(
-                    onPressed: () {
-                      //Is there a better/cleaner way to do this?
-
-                      //get module values for each head
-                      for (int i = 0; i < headList.length; i++) {
-                        for (final i in headList[i].moduleList) {
-                          newValues.add(i.moduleValue.toString());
-                        }
-                      }
-
-                      //debugging purposes
-                      for (int i = 0; i < offSetsArray.length; i++) {
-                        print("new values = ${newValues[i]}");
-                      }
-
-                      //!!! - String not updating the values in xml file
-                      xmlParser.setXoffsets(newValues);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      child: Text(
-                        "Apply Changes",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // //Apply Button
+            // Container(
+            //   margin: EdgeInsets.symmetric(
+            //     horizontal: 40,
+            //     vertical: 20,
+            //   ),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: <Widget>[
+            //       ElevatedButton(
+            //         onPressed: () {
+            //           //Is there a better/cleaner way to do this?
+            //
+            //           //get module values for each head
+            //           for (int i = 0; i < headList.length; i++) {
+            //             for (final i in headList[i].moduleList) {
+            //               newValues.add(i.moduleValue.toString());
+            //             }
+            //           }
+            //
+            //           //debugging purposes
+            //           for (int i = 0; i < offSetsArray.length; i++) {
+            //             print("new values = ${newValues[i]}");
+            //           }
+            //           xmlParser.setXoffsets(newValues);
+            //         },
+            //         child: Padding(
+            //           padding: const EdgeInsets.symmetric(vertical: 15.0),
+            //           child: Text(
+            //             "Apply Changes",
+            //             style: TextStyle(fontSize: 20),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
         isAlwaysShown: true,
