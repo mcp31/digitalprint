@@ -1,6 +1,7 @@
 import 'package:digital_print/xOffsets/xmlParser.dart';
 import 'package:flutter/material.dart';
 import 'package:digital_print/constants.dart';
+import 'MakeHead.dart';
 import 'ModuleClass.dart';
 import 'HeadClass.dart';
 
@@ -9,8 +10,8 @@ final xmlParser = new SysTypeParser(
   "/Users/maryplana/Desktop/Projects/OpconfigRewrite/SysTypeXml.xml",
 );
 
-//var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
-var headArray = [10, 8, 6, 4, 2];
+var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
+//var headArray = [9, 5, 6, 4, 2];
 var offSetsArray = xmlParser.getXoffsets(); //[4, 3, 2, 1];
 
 class ModulesHomePage extends StatefulWidget {
@@ -22,14 +23,19 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
   List<Head> headList = [];
   List<int> deltaList = [];
   List<TextEditingController> textList = [];
-  int headIndex = 0;
+  List<String> sysTypeList = xmlParser.getSysTypes();
 
+  String selectedSysType;
+  int headIndex = 0;
   final ScrollController _scrollController = ScrollController();
   double containerWidth;
 
   @override
   void initState() {
     super.initState();
+
+    //TODO: Find a way to get current sysType
+
     for (TextEditingController i in textList) {
       i = TextEditingController();
     }
@@ -42,6 +48,48 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
     }
     _scrollController.dispose();
     super.dispose();
+  }
+
+  //Redraw heads when different SysType is selected
+  Widget drawSysType(int offSetIndex) {
+    return ListView.builder(
+      physics: ScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: headList.length,
+      itemBuilder: (BuildContext context, int index) {
+        //add module for the UI in a head
+        for (int i = 0; i < headList[index].numberOfModules; i++) {
+          headList[index].moduleList.add(
+                Module(
+                  label: "${i + 1}",
+                  moduleValue: offSetsArray[offSetIndex],
+                  incrementAmt: 10,
+                ),
+              );
+          offSetIndex++;
+          if (offSetIndex >= offSetsArray.length) {
+            offSetIndex = 0;
+          }
+        }
+
+        //Limits the amount of module UI being printed
+        headList[index].moduleList.length = headList[index].numberOfModules;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          child: MakeHead(
+            moduleCount: headList[index].numberOfModules,
+            moduleList: headList[index].moduleList,
+            headLabel: index + 1,
+            screenSize: context,
+            containerWidth: containerWidth,
+            headList: headList,
+            textList: textList,
+            deltaList: deltaList,
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -95,6 +143,58 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
         child: ListView(
           controller: _scrollController,
           children: <Widget>[
+            //Dropdown Menu for System Type
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 40.0,
+                vertical: 20,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "System Type:",
+                    style: kCardHeaderTextStyle,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  DropdownButton<String>(
+                    value: selectedSysType,
+                    icon: const Icon(Icons.arrow_drop_down),
+                    iconSize: 30,
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Colors.blue[700],
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        //TODO: How to make head redraw after a different sysType has been selected
+                        this.selectedSysType = newValue;
+                        xmlParser.setSysType(this.selectedSysType);
+                        selectedSysType = this.selectedSysType;
+                      });
+                    },
+                    items: xmlParser
+                        .getSysTypes()
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Container(
+                          width: 100,
+                          child: Center(
+                            child: Text(value),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+
+            //Creates the head along with its contents
+            //drawSysType(offSetIndex),
             ListView.builder(
               physics: ScrollPhysics(),
               shrinkWrap: true,
@@ -121,11 +221,15 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: makeHead(
-                    headList[index].numberOfModules,
-                    index + 1,
-                    headList[index].moduleList,
-                    context,
+                  child: MakeHead(
+                    moduleCount: headList[index].numberOfModules,
+                    moduleList: headList[index].moduleList,
+                    headLabel: index + 1,
+                    screenSize: context,
+                    containerWidth: containerWidth,
+                    headList: headList,
+                    textList: textList,
+                    deltaList: deltaList,
                   ),
                 );
               },
@@ -135,374 +239,5 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
         isAlwaysShown: true,
       ),
     );
-  }
-
-  //Head Skeleton Code
-  Widget makeHead(
-      int moduleCount, int headLabel, List moduleList, BuildContext context) {
-    double textBoxWidth = MediaQuery.of(context).size.width / 4;
-    double graphicModuleContainerWidth =
-        MediaQuery.of(context).size.width / 1.2;
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 40.0,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Head #$headLabel",
-            style: kCardHeaderTextStyle,
-          ),
-
-          //Container housing the graphic and module count
-          Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 10.0,
-            ),
-            padding: EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 20.0,
-            ),
-            decoration: BoxDecoration(
-              color: kOffWhite,
-              borderRadius: BorderRadius.circular(5.0),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 2,
-                  offset: Offset(1, 1),
-                  color: Colors.grey,
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                //Heads
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.yellow[200],
-                    border: Border.all(
-                      width: .8,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-
-                  //Creates the graphic of the modules
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: graphicModuleContainerWidth,
-                        height: 100,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: moduleCount,
-                          itemBuilder: (BuildContext context, int index) {
-                            /*
-                            Makes graphicModule decrease in size as more
-                            modules are being displayed
-                             */
-                            if (moduleCount > 6) {
-                              containerWidth = 112.5;
-                            } else {
-                              containerWidth = 150;
-                            }
-
-                            if (index.isEven) {
-                              return Column(
-                                children: <Widget>[
-                                  makeGraphicModule(
-                                      index + 1, containerWidth, moduleCount),
-                                  SizedBox(
-                                    height: 50,
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return Column(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 50,
-                                  ),
-                                  makeGraphicModule(
-                                      index + 1, containerWidth, moduleCount),
-                                ],
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(
-                  height: 20,
-                ),
-
-                //Creates the UI of the modules
-                Container(
-                  height: 95,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: moduleList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return makeModule(
-                        moduleList[index],
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-
-                //Delta
-                Text(
-                  "Delta",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                      width: textBoxWidth,
-                      child: TextFormField(
-                        controller: textList[headLabel - 1],
-                        decoration: InputDecoration(
-                          filled: true,
-                          border: InputBorder.none,
-                          hintText: "Inches",
-                          hintTextDirection: TextDirection.rtl,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        //Gets the text in the textfield and turn it into an int
-                        deltaList[headLabel - 1] =
-                            int.parse(textList[headLabel - 1].text);
-
-                        //Changes the value DISPLAYED on the modules
-                        //in the Head class
-                        setState(() {
-                          headList[headLabel - 1]
-                              .addDelta(deltaList[headLabel - 1]);
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          "Apply Delta",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  //Module Skeleton Code
-  Widget makeModule(Module module) {
-    return Row(
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              "Module #${module.getModuleLabel}",
-              style: TextStyle(fontSize: 20),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey[700],
-                ),
-                color: Colors.grey[300],
-              ),
-              margin: EdgeInsets.only(
-                //left: 30.0,
-                right: 10,
-                top: 5,
-                bottom: 5,
-              ),
-              padding: EdgeInsets.all(
-                12,
-              ),
-              width: 150,
-              height: 60,
-              child: Text(
-                "${module.getModuleValue}",
-                style: TextStyle(fontSize: 30),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            right: 20,
-          ),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 22,
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    module.add();
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue[700],
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  height: kButtonSize,
-                  width: kButtonSize,
-                  child: Icon(
-                    Icons.add,
-                    color: kOffWhite,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (module.getModuleValue > 0) {
-                      module.subtract();
-                    }
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue[700],
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  height: kButtonSize,
-                  width: kButtonSize,
-                  child: Icon(
-                    Icons.remove,
-                    color: kOffWhite,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget makeGraphicModule(int modNum, double containerWidth, int moduleCount) {
-    if (modNum == 1 && modNum == moduleCount) {
-      return Container(
-        width: containerWidth,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.green[400],
-          border: Border.all(
-            width: 2,
-            color: kSemiBlack,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            "Mod $modNum",
-            style: TextStyle(
-              fontSize: 25,
-            ),
-          ),
-        ),
-      );
-    } else if (modNum == 1 && modNum != moduleCount) {
-      return Container(
-        width: containerWidth,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.green[400],
-          border: Border(
-            top: BorderSide(width: 2, color: kSemiBlack),
-            bottom: BorderSide(width: 2, color: kSemiBlack),
-            left: BorderSide(width: 2, color: kSemiBlack),
-          ),
-        ),
-        child: Center(
-          child: Text(
-            "Mod $modNum",
-            style: TextStyle(
-              fontSize: 25,
-            ),
-          ),
-        ),
-      );
-    } else if (modNum.isEven && modNum != moduleCount ||
-        modNum.isOdd && modNum != moduleCount) {
-      return Container(
-        width: containerWidth,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.green[400],
-          border: Border(
-            top: BorderSide(width: 2, color: kSemiBlack),
-            bottom: BorderSide(width: 2, color: kSemiBlack),
-          ),
-        ),
-        child: Center(
-          child: Text(
-            "Mod $modNum",
-            style: TextStyle(
-              fontSize: 25,
-            ),
-          ),
-        ),
-      );
-    } else if (modNum == moduleCount) {
-      return Container(
-        width: containerWidth,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.green[400],
-          border: Border(
-            top: BorderSide(width: 2, color: kSemiBlack),
-            bottom: BorderSide(width: 2, color: kSemiBlack),
-            right: BorderSide(width: 2, color: kSemiBlack),
-          ),
-        ),
-        child: Center(
-          child: Text(
-            "Mod $modNum",
-            style: TextStyle(
-              fontSize: 25,
-            ),
-          ),
-        ),
-      );
-    }
   }
 }
