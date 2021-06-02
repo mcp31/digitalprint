@@ -75,8 +75,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: kOffWhite,
       ),
       //home: MyHomePage(),
-      //home: ModulesHomePage(),
-      home: ThirdScreenHomePage(),
+      home: ModulesHomePage(),
+      //home: ThirdScreenHomePage(),
     );
   }
 }

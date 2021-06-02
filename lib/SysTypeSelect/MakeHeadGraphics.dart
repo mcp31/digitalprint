@@ -7,9 +7,7 @@ class MakeHeadGraphics extends StatefulWidget {
   int headLabel;
   BuildContext screenSize;
   List moduleList;
-  //List deltaList;
   List headList;
-  //List textList;
   double containerWidth;
 
   MakeHeadGraphics({
@@ -19,8 +17,6 @@ class MakeHeadGraphics extends StatefulWidget {
     @required this.screenSize,
     @required this.containerWidth,
     @required this.headList,
-    // @required this.textList,
-    // @required this.deltaList,
   });
 
   @override

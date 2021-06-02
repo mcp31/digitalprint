@@ -88,7 +88,7 @@ class _MakeHeadState extends State<MakeHead> {
                     children: <Widget>[
                       Container(
                         width: graphicModuleContainerWidth,
-                        height: 100,
+                        height: 105,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: widget.moduleCount,
@@ -98,7 +98,7 @@ class _MakeHeadState extends State<MakeHead> {
                             modules are being displayed
                              */
                             if (widget.moduleCount > 6) {
-                              widget.containerWidth = 112.5;
+                              widget.containerWidth = 113;
                             } else {
                               widget.containerWidth = 150;
                             }
@@ -111,15 +111,25 @@ class _MakeHeadState extends State<MakeHead> {
                                       widget.containerWidth,
                                       widget.moduleCount),
                                   SizedBox(
-                                    height: 50,
+                                    height: 1.5,
+                                  ),
+                                  makeGraphicModuleAttachment(
+                                    index + 1,
+                                    widget.containerWidth / 6,
+                                    widget.moduleCount,
                                   ),
                                 ],
                               );
                             } else {
                               return Column(
                                 children: <Widget>[
+                                  makeGraphicModuleAttachment(
+                                    index + 1,
+                                    widget.containerWidth / 6,
+                                    widget.moduleCount,
+                                  ),
                                   SizedBox(
-                                    height: 50,
+                                    height: 1.5,
                                   ),
                                   makeGraphicModule(
                                       index + 1,
@@ -270,7 +280,7 @@ class _MakeHeadState extends State<MakeHead> {
   Widget makeGraphicModule(int modNum, double containerWidth, int moduleCount) {
     if (modNum == 1 && modNum == moduleCount) {
       return Container(
-        width: containerWidth,
+        width: containerWidth * 1.15,
         height: 50,
         decoration: BoxDecoration(
           color: Colors.green[400],
@@ -290,7 +300,10 @@ class _MakeHeadState extends State<MakeHead> {
       );
     } else if (modNum == 1 && modNum != moduleCount) {
       return Container(
-        width: containerWidth,
+        padding: EdgeInsets.only(
+          left: 15,
+        ),
+        width: containerWidth * 1.15,
         height: 50,
         decoration: BoxDecoration(
           color: Colors.green[400],
@@ -332,7 +345,10 @@ class _MakeHeadState extends State<MakeHead> {
       );
     } else if (modNum == moduleCount) {
       return Container(
-        width: containerWidth,
+        padding: EdgeInsets.only(
+          right: 15,
+        ),
+        width: containerWidth * 1.15,
         height: 50,
         decoration: BoxDecoration(
           color: Colors.green[400],
@@ -350,6 +366,95 @@ class _MakeHeadState extends State<MakeHead> {
             ),
           ),
         ),
+      );
+    }
+  }
+
+  Widget makeGraphicModuleAttachment(
+      int modNum, double containerWidth, int moduleCount) {
+    //If it's the first and only module
+    if (modNum == 1 && modNum == moduleCount) {
+      return SizedBox(
+        height: 50,
+      );
+    } else if (modNum == 1 && modNum != moduleCount) {
+      //If it's the first module and not the only module
+      return Row(
+        children: <Widget>[
+          SizedBox(
+            width: containerWidth * 5.9,
+          ),
+          Container(
+            width: containerWidth,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.green[400],
+              border: Border(
+                top: BorderSide(width: 2, color: kSemiBlack),
+                bottom: BorderSide(width: 2, color: kSemiBlack),
+                left: BorderSide(width: 2, color: kSemiBlack),
+              ),
+            ),
+          ),
+        ],
+      );
+    } else if (modNum.isEven && modNum != moduleCount ||
+        modNum.isOdd && modNum != moduleCount) {
+      //If it's not the first or last module
+      return Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: containerWidth,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.green[400],
+                border: Border(
+                  top: BorderSide(width: 2, color: kSemiBlack),
+                  bottom: BorderSide(width: 2, color: kSemiBlack),
+                  right: BorderSide(width: 2, color: kSemiBlack),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: containerWidth * 4,
+            ),
+            Container(
+              width: containerWidth,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.green[400],
+                border: Border(
+                  top: BorderSide(width: 2, color: kSemiBlack),
+                  bottom: BorderSide(width: 2, color: kSemiBlack),
+                  left: BorderSide(width: 2, color: kSemiBlack),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else if (modNum == moduleCount) {
+      //If it's the last module
+      return Row(
+        children: <Widget>[
+          Container(
+            width: containerWidth,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.green[400],
+              border: Border(
+                top: BorderSide(width: 2, color: kSemiBlack),
+                bottom: BorderSide(width: 2, color: kSemiBlack),
+                right: BorderSide(width: 2, color: kSemiBlack),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: containerWidth * 5.9,
+          ),
+        ],
       );
     }
   }
