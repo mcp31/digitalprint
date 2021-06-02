@@ -14,12 +14,12 @@ final xmlParser = new SysTypeParser(
 var headArray = [9, 5, 6, 4, 2];
 var offSetsArray = xmlParser.getXoffsets(); //[4, 3, 2, 1];
 
-class ThirdScreenHomePage extends StatefulWidget {
+class SysTypeSelectHomePage extends StatefulWidget {
   @override
-  _ThirdScreenHomePageState createState() => _ThirdScreenHomePageState();
+  _SysTypeSelectHomePageState createState() => _SysTypeSelectHomePageState();
 }
 
-class _ThirdScreenHomePageState extends State<ThirdScreenHomePage> {
+class _SysTypeSelectHomePageState extends State<SysTypeSelectHomePage> {
   List<Head> headList = [];
   List<int> deltaList = [];
   List<TextEditingController> textList = [];

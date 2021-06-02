@@ -1,4 +1,4 @@
-import 'package:digital_print/ThirdScreen/ThirdScreenHomePage.dart';
+import 'package:digital_print/SysTypeSelect/SysTypeSelectHomePage.dart';
 import 'package:digital_print/constants.dart';
 import 'package:digital_print/xOffsets/ModulesHomePage.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +48,19 @@ void main(List<String> args) {
 //             home: ModulesHomePage(),
 //           );
 //         }
+//       case 3:
+//         {
+//           return MaterialApp(
+//             debugShowCheckedModeBanner: false,
+//             theme: ThemeData(
+//               primaryColor: Colors.blue[700],
+//               scaffoldBackgroundColor: kOffWhite,
+//             ),
+//             //home: MyHomePage(),
+//             //home: ModulesHomePage(),
+//             home: SysTypeSelectHomePage(),
+//           );
+//         }
 //       default:
 //         {
 //           return MaterialApp(
@@ -75,8 +88,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: kOffWhite,
       ),
       //home: MyHomePage(),
-      home: ModulesHomePage(),
-      //home: ThirdScreenHomePage(),
+      //home: ModulesHomePage(),
+      home: SysTypeSelectHomePage(),
     );
   }
 }
