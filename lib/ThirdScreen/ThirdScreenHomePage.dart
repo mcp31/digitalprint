@@ -1,25 +1,25 @@
+import 'package:digital_print/xOffsets/HeadClass.dart';
+import 'MakeHeadGraphics.dart';
+import 'package:digital_print/xOffsets/ModuleClass.dart';
 import 'package:digital_print/xOffsets/xmlParser.dart';
 import 'package:flutter/material.dart';
 import 'package:digital_print/constants.dart';
-import 'MakeHead.dart';
-import 'ModuleClass.dart';
-import 'HeadClass.dart';
 
 //debugging purposes
 final xmlParser = new SysTypeParser(
   "/Users/maryplana/Desktop/Projects/OpconfigRewrite/SysTypeXml.xml",
 );
 
-var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
-//var headArray = [9, 5, 6, 4, 2];
+//var headArray = xmlParser.getModuleCount(); //[4, 3, 2, 1];
+var headArray = [9, 5, 6, 4, 2];
 var offSetsArray = xmlParser.getXoffsets(); //[4, 3, 2, 1];
 
-class ModulesHomePage extends StatefulWidget {
+class ThirdScreenHomePage extends StatefulWidget {
   @override
-  _ModulesHomePageState createState() => _ModulesHomePageState();
+  _ThirdScreenHomePageState createState() => _ThirdScreenHomePageState();
 }
 
-class _ModulesHomePageState extends State<ModulesHomePage> {
+class _ThirdScreenHomePageState extends State<ThirdScreenHomePage> {
   List<Head> headList = [];
   List<int> deltaList = [];
   List<TextEditingController> textList = [];
@@ -77,15 +77,15 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
-          child: MakeHead(
+          child: MakeHeadGraphics(
             moduleCount: headList[index].numberOfModules,
             moduleList: headList[index].moduleList,
             headLabel: index + 1,
             screenSize: context,
             containerWidth: containerWidth,
             headList: headList,
-            textList: textList,
-            deltaList: deltaList,
+            //textList: textList,
+            //deltaList: deltaList,
           ),
         );
       },
@@ -144,54 +144,54 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
           controller: _scrollController,
           children: <Widget>[
             //Dropdown Menu for System Type
-            // Padding(
-            //   padding: EdgeInsets.symmetric(
-            //     horizontal: 40.0,
-            //     vertical: 20,
-            //   ),
-            //   child: Row(
-            //     children: <Widget>[
-            //       Text(
-            //         "System Type:",
-            //         style: kCardHeaderTextStyle,
-            //       ),
-            //       SizedBox(
-            //         width: 20,
-            //       ),
-            //       DropdownButton<String>(
-            //         value: selectedSysType,
-            //         icon: const Icon(Icons.arrow_drop_down),
-            //         iconSize: 30,
-            //         elevation: 16,
-            //         underline: Container(
-            //           height: 2,
-            //           color: Colors.blue[700],
-            //         ),
-            //         onChanged: (String newValue) {
-            //           setState(() {
-            //             //TODO: How to make head redraw after a different sysType has been selected
-            //             this.selectedSysType = newValue;
-            //             xmlParser.setSysType(this.selectedSysType);
-            //             selectedSysType = this.selectedSysType;
-            //           });
-            //         },
-            //         items: xmlParser
-            //             .getSysTypes()
-            //             .map<DropdownMenuItem<String>>((String value) {
-            //           return DropdownMenuItem<String>(
-            //             value: value,
-            //             child: Container(
-            //               width: 100,
-            //               child: Center(
-            //                 child: Text(value),
-            //               ),
-            //             ),
-            //           );
-            //         }).toList(),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 40.0,
+                vertical: 20,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "System Type:",
+                    style: kCardHeaderTextStyle,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  DropdownButton<String>(
+                    value: selectedSysType,
+                    icon: const Icon(Icons.arrow_drop_down),
+                    iconSize: 30,
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Colors.blue[700],
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        //TODO: How to make head redraw after a different sysType has been selected
+                        this.selectedSysType = newValue;
+                        xmlParser.setSysType(this.selectedSysType);
+                        selectedSysType = this.selectedSysType;
+                      });
+                    },
+                    items: xmlParser
+                        .getSysTypes()
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Container(
+                          width: 100,
+                          child: Center(
+                            child: Text(value),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
 
             //Creates the head along with its contents
             //drawSysType(offSetIndex),
@@ -221,15 +221,15 @@ class _ModulesHomePageState extends State<ModulesHomePage> {
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: MakeHead(
+                  child: MakeHeadGraphics(
                     moduleCount: headList[index].numberOfModules,
                     moduleList: headList[index].moduleList,
                     headLabel: index + 1,
                     screenSize: context,
                     containerWidth: containerWidth,
                     headList: headList,
-                    textList: textList,
-                    deltaList: deltaList,
+                    //textList: textList,
+                    //deltaList: deltaList,
                   ),
                 );
               },

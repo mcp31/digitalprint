@@ -1,3 +1,4 @@
+import 'package:digital_print/ThirdScreen/ThirdScreenHomePage.dart';
 import 'package:digital_print/constants.dart';
 import 'package:digital_print/xOffsets/ModulesHomePage.dart';
 import 'package:flutter/material.dart';
@@ -73,16 +74,9 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue[700],
         scaffoldBackgroundColor: kOffWhite,
       ),
-
-      /*
-      Currently, there's no way to execute different screens
-      at the command line
-            -Maybe have two different types of main.dart?
-            https://stackoverflow.com/questions/55004302/how-do-you-pass-arguments-from-command-line-to-main-in-flutter-dart
-       */
-
       //home: MyHomePage(),
-      home: ModulesHomePage(),
+      //home: ModulesHomePage(),
+      home: ThirdScreenHomePage(),
     );
   }
 }
