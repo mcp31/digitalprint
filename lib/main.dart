@@ -88,8 +88,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: kOffWhite,
       ),
       //home: MyHomePage(),
-      //home: ModulesHomePage(),
-      home: SysTypeSelectHomePage(),
+      home: ModulesHomePage(),
+      //home: SysTypeSelectHomePage(),
     );
   }
 }
